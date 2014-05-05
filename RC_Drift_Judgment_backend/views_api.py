@@ -35,6 +35,7 @@ class JudgeList(generics.ListCreateAPIView):
     """
     model = User
     serializer_class = UserSerializer
+    queryset = User.objects.exclude(username='root')
 
 class JudgeDetail(generics.RetrieveUpdateDestroyAPIView):
     """
@@ -42,6 +43,7 @@ class JudgeDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     model = User
     serializer_class = UserSerializer
+    queryset = User.objects.exclude(username='root')
 
 class PilotList(generics.ListCreateAPIView):
     """
