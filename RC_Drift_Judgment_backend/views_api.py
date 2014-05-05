@@ -23,7 +23,7 @@ def api_root(request, format=None):
     The entry endpoint of our API.
     """
     return Response({
-        'judges' : reverse('judge-list',request=request),
+        'judges' : reverse('user-list',request=request),
         'pilots': reverse('pilot-list', request=request),
         'marks': reverse('mark-list', request=request),
         'results' : reverse('results-detail', request=request),
