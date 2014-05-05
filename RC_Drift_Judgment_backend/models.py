@@ -11,6 +11,10 @@ class Pilot(models.Model):
 
     teamName = models.CharField('Team',max_length=200,blank=True,null=True)
 
+    def getRacesResults(self):
+        racesResults = self.marks.values('raceNumber').annotate(best_score=models.Min('mark'),avg_score=models.Avg('mark'))
+        return sorted(racesResults,key=lambda race: race['avg_score'])
+
     def __unicode__(self):
         return "#%d : %s %s %s" % (self.pilotNumber,self.lastName, self.firstName, self.middleName)
 

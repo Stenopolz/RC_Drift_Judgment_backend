@@ -103,10 +103,7 @@ def RaceResults(request):
 
             return sorted(racesResults,key=lambda race: race['avg_score'])
 
-        print "first"
         firstRace = getBestRace(first)
-
-        print "second"
         secondRace = getBestRace(second)
 
         def compareBestMarks(firstBm,secondBm):
@@ -155,6 +152,6 @@ def RaceResults(request):
     pilots = list(Pilot.objects.all())
     sortedPilots = sorted(pilots,cmp=pilotCompare)
 
-    serializer =  PilotSerializer(pilots, many=True)
+    serializer =  PilotResultSerializer(pilots, many=True)
     return Response(serializer.data)
 

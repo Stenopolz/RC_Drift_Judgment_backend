@@ -6,8 +6,8 @@ from .views_api import *
 urlpatterns = patterns('',
     # REST API
     ## judges
-    url(r'^judges/$', JudgeList.as_view(), name='judge-list'),
-    url(r'^judges/(?P<pk>\d+)/$', JudgeDetail.as_view(), name='judge-detail'),
+    url(r'^judges/$', JudgeList.as_view(), name='user-list'),
+    url(r'^judges/(?P<pk>\d+)/$', JudgeDetail.as_view(), name='user-detail'),
     ## pilots
     url(r'^pilots/$', PilotList.as_view(), name='pilot-list'),
     url(r'^pilots/(?P<pk>\d+)/$', PilotDetail, name='pilot-detail'),
