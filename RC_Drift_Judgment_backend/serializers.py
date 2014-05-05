@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 class PilotSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pilot
-        fields = ['id','firstName','middleName','lastName','teamName',]
+        fields = ['id','firstName','middleName','lastName','teamName','pilotNumber',]
 
 class RaceMarkSerializer(serializers.ModelSerializer):
     class Meta:

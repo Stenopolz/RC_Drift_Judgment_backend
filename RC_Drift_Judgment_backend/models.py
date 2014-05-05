@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 class Pilot(models.Model):
     db_table = 'pilots'
 
+    pilotNumber = models.IntegerField('Pilot Number')
     firstName = models.CharField('First Name',max_length=120)
     middleName = models.CharField('Middle Name',max_length=120,blank=True,null=True)
     lastName = models.CharField('Last Name',max_length=120)
@@ -11,7 +12,7 @@ class Pilot(models.Model):
     teamName = models.CharField('Team',max_length=200,blank=True,null=True)
 
     def __unicode__(self):
-        return "%s %s %s" % (self.lastName, self.firstName, self.middleName)
+        return "#%d : %s %s %s" % (self.pilotNumber,self.lastName, self.firstName, self.middleName)
 
 MARK_CHOICES = (
     (0,'0 - GODLIKE!'),
