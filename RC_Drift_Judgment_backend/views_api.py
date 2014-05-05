@@ -134,11 +134,15 @@ def RaceResults(request):
             return res3
 
         # 6 compare best marks from judges
-        firstMarks = first.marks.all()["-mark"]
-        secondMarks = second.marks.all()["-mark"]
+        firstMarks = first.marks.all().order_by('mark')
+        secondMarks = second.marks.all().order_by('mark')
+
+        print firstMarks
+        print secondMarks
+
         if firstMarks[0].mark < secondMarks[0].mark:
             return -1
-        elif  firstMarks[0].mark < secondMarks[0].mark:
+        elif  firstMarks[0].mark > secondMarks[0].mark:
             return 1
 
         # 7 compare by numbers
@@ -152,6 +156,10 @@ def RaceResults(request):
     pilots = list(Pilot.objects.all())
     sortedPilots = sorted(pilots,cmp=pilotCompare)
 
-    serializer =  PilotResultSerializer(pilots, many=True)
-    return Response(serializer.data)
+    data = []
+    for pilot in sortedPilots:
+        ser = PilotResultSerializer(pilot)
+        data.append ( ser.data )
+
+    return Response(data)
 

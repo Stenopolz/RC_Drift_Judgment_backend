@@ -44,4 +44,4 @@ class RaceMark(models.Model):
         unique_together = ['raceNumber','judge','pilot']
 
     def __unicode__(self):
-        return ""
+        return "pilot #: %d #%d : %d" % (self.pilot.pilotNumber,self.raceNumber,self.mark)
