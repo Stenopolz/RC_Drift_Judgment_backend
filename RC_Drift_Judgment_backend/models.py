@@ -1,5 +1,7 @@
 from django.db import models
+from django.contrib import admin
 from django.contrib.auth.models import User
+
 
 class Pilot(models.Model):
     db_table = 'pilots'
@@ -17,6 +19,11 @@ class Pilot(models.Model):
 
     def __unicode__(self):
         return "#%d : %s %s %s" % (self.pilotNumber,self.lastName, self.firstName, self.middleName)
+
+class PilotAdmin(admin.ModelAdmin):
+    list_display = ('pilotNumber','firstName','middleName','lastName','teamName')
+
+admin.site.register(Pilot,PilotAdmin)
 
 MARK_CHOICES = (
     (0,'0 - GODLIKE!'),
@@ -45,3 +52,8 @@ class RaceMark(models.Model):
 
     def __unicode__(self):
         return "pilot #: %d #%d : %d" % (self.pilot.pilotNumber,self.raceNumber,self.mark)
+
+class RaceMarkAdmin(admin.ModelAdmin):
+    list_display = ('raceNumber','pilot','judge','mark',)
+
+admin.site.register(RaceMark,RaceMarkAdmin)
