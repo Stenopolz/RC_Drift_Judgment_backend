@@ -86,33 +86,75 @@ def PilotDetail(request, pk=None, format=None):
 
 @api_view(['GET'])
 def RaceResults(request):
+    """
+    """
 
-    sortedPilots = []
+    def pilotCompare(first,second):
+        def getBestRace(pilot,exceptRaceNum=None):
 
-    pilots = Pilot.objects.all()
-    for pilot in pilots:
+            racesResults = pilot.marks.values('raceNumber').annotate(best_score=models.Min('mark'),avg_score=models.Avg('mark'))
 
-        racesResults = pilot.marks.values('raceNumber').annotate(best_score=models.Min('mark'),avg_score=models.Avg('mark'))
+            if exceptRaceNum:
+                print "excepting %s" % exceptRaceNum
+                for i in range(0,len(racesResults)):
+                    if racesResults[i]['raceNumber'] == exceptRaceNum:
+                        del racesResults[i]
+                        break
 
-        # get best race for pilot
-        bestRace = racesResults[0]
-        for race in racesResults:
-            if race['best_score'] < bestRace['best_score']:
-                bestRace = race
+            return sorted(racesResults,key=lambda race: race['avg_score'])
 
-        sortedPilots.append( (bestRace['avg_score'], bestRace, pilot ) )
+        print "first"
+        firstRace = getBestRace(first)
 
-    # Sort pilots by avg score of best race
-    sortedPilots = sorted(sortedPilots, key=lambda race: race[0])
+        print "second"
+        secondRace = getBestRace(second)
 
-    # Group pilots by their avg score of best race
-    values = sorted(set(map(lambda x:x[0], sortedPilots)))
-    newlist = { x:[ (y[1],y[2]) for y in sortedPilots if y[0]==x] for x in values}
-    newlist = sorted(newlist)
-    # TODO: Check 4,5,6 conditions here
-    print newlist
+        def compareBestMarks(firstBm,secondBm):
+            if firstRace[0]['avg_score'] < secondRace[0]['avg_score']:
+                return -1
+            elif firstRace[0]['avg_score'] > secondRace[0]['avg_score']:
+                return 1
+            else:
+                return 0
 
-    # Test output
-    # TODO : Replace with real data
+        # 3
+        res1 = compareBestMarks(firstRace,secondRace)
+        if res1 != 0:
+            return res1
+
+        # 4
+        del firstRace[0]
+        del secondRace[0]
+        res2 = compareBestMarks(firstRace,secondRace)
+        if res2 != 0:
+            return res2
+
+        # 5
+        del firstRace[0]
+        del secondRace[0]
+        res3 = compareBestMarks(firstRace,secondRace)
+        if res3 != 0:
+            return res3
+
+        # 6 compare best marks from judges
+        firstMarks = first.marks.all()["-mark"]
+        secondMarks = second.marks.all()["-mark"]
+        if firstMarks[0].mark < secondMarks[0].mark:
+            return -1
+        elif  firstMarks[0].mark < secondMarks[0].mark:
+            return 1
+
+        # 7 compare by numbers
+        if first.pilotNumber < second.pilotNumber:
+            return -1
+        elif  first.pilotNumber > second.pilotNumber:
+            return 1
+
+        return 0
+
+    pilots = list(Pilot.objects.all())
+    sortedPilots = sorted(pilots,cmp=pilotCompare)
+
     serializer =  PilotSerializer(pilots, many=True)
-    return Response({ 'res' : serializer.data })
+    return Response(serializer.data)
+
