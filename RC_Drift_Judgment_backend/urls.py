@@ -11,9 +11,10 @@ from .views import *
 # URL Handlers
 urlpatterns = patterns('',
     # ADMIN Panel
+    url(r'^results', results, name='results'),
     url(r'^admin/', include(admin.site.urls)),
     # WEB content
-    url(r'^$', home, name='home' ),
+    url(r'^$', results, name='home' ),
     # REST API
     url(r'^api/', include('RC_Drift_Judgment_backend.api') ),
 )

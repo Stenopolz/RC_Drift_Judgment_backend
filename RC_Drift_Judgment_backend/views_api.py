@@ -139,9 +139,6 @@ def RaceResults(request):
         firstMarks = first.marks.all().order_by('mark')
         secondMarks = second.marks.all().order_by('mark')
 
-        print firstMarks
-        print secondMarks
-
         if firstMarks[0].mark < secondMarks[0].mark:
             return -1
         elif  firstMarks[0].mark > secondMarks[0].mark:

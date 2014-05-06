@@ -1,0 +1,94 @@
+{% extends "admin/base_site.html" %}
+{% load staticfiles %}
+
+{% block title %}Racing results{% endblock %}
+{% block extrahead %}
+    <script type="text/javascript" src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+    <script type="text/javascript">
+    function updateResults()
+    {
+        $("#content table tbody tr").remove();              //Cleanup
+        $("#content table tbody").append("<tr style=\"margin: 10px;\" align=\"center\"><td colspan=\"9\"><img src=\"{% static 'img/loading.gif' %}\" /></td></tr>");  //Addloading indicator
+
+        $.ajax({
+          url: "{% url 'results-detail' %}",
+          data: {},
+          success: function (data) {
+            $("#content table tbody tr").remove();
+
+            function getRaces(races,num)
+            {
+                var min = 500;
+                var obj = null;
+
+                for (var i = races.length - 1; i >= 0; i--) {
+                    if (races[i].best_score < min)
+                        min = races[i].best_score;
+
+                    if (races[i].raceNumber == num-1)
+                        obj=races[i];
+                };
+
+                var ret = obj.avg_score;
+                ret = obj.best_score == min ? "<strong>"+ret+"</strong>" : ret;
+                return ret;
+            }
+
+            for (var id in data)
+            {
+                var obj = data[id];
+                var num = id;
+
+                $("#content table tbody").append("<tr>"+
+                    "<td>"+num+"</td>"+
+                    "<td><strong>"+obj.pilotNumber+"</strong></td>"+
+                    "<td>"+obj.firstName+"</td>"+
+                    "<td>"+obj.middleName+"</td>"+
+                    "<td>"+obj.lastName+"</td>"+
+                    "<td>"+obj.teamName+"</td>"+
+                    "<td>"+getRaces(obj.racesResults,1)+"</td>"+
+                    "<td>"+getRaces(obj.racesResults,2)+"</td>"+
+                    "<td>"+getRaces(obj.racesResults,3)+"</td>"+
+                    "</tr>");
+            }
+
+
+          },
+          dataType: "json"
+        });
+    }
+
+        window.onload = function() {
+            updateResults();
+        };
+    </script>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <h1>Racing results:</h1>
+  <div id="content">
+    <div style="padding-bottom:15px;">
+        <button id="refresh" onclick="updateResults()">Refresh</button>
+    </div>
+    <table width="100%">
+        <thead>
+            <tr>
+                <th width="2%">Position</th>
+                <th width="2%">#</th>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Last Name</th>
+                <th>Team</th>
+                <th>Race 1</th>
+                <th>Race 2</th>
+                <th>Race 3</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
