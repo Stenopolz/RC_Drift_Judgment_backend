@@ -22,16 +22,16 @@
                 var obj = null;
 
                 for (var i = races.length - 1; i >= 0; i--) {
-                    if (races[i].best_score < min)
-                        min = races[i].best_score;
+                    if (races[i].avg_score < min)
+                        min = races[i].avg_score;
 
                     if (races[i].raceNumber == num-1)
                         obj=races[i];
                 };
 
-                var ret = obj.avg_score;
-                ret = obj.best_score == min ? "<strong>"+ret+"</strong>" : ret;
-                return ret;
+                var ret = Math.ceil( parseFloat(obj.avg_score) * 10) / 10;
+                ret = obj.avg_score == min ? "<strong>"+ret+"</strong>" : ret;
+                return ret
             }
 
             for (var id in data)

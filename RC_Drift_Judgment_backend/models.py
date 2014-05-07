@@ -22,7 +22,7 @@ class Pilot(models.Model):
         return "#%d : %s %s %s" % (self.pilotNumber,self.lastName, self.firstName, self.middleName)
 
 class PilotAdmin(admin.ModelAdmin):
-    list_display = ('pilotNumber','firstName','middleName','lastName','carModel','teamName',)
+    list_display = ('pilotNumber','firstName','lastName','carModel','teamName',)
 
 admin.site.register(Pilot,PilotAdmin)
 
