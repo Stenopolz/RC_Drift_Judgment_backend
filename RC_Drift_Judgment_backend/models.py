@@ -12,6 +12,7 @@ class Pilot(models.Model):
     lastName = models.CharField('Last Name',max_length=120)
 
     teamName = models.CharField('Team',max_length=200,blank=True,null=True)
+    carModel = models.CharField('Car',max_length=200,blank=True,null=True)
 
     def getRacesResults(self):
         racesResults = self.marks.values('raceNumber').annotate(best_score=models.Min('mark'),avg_score=models.Avg('mark'))
@@ -21,7 +22,7 @@ class Pilot(models.Model):
         return "#%d : %s %s %s" % (self.pilotNumber,self.lastName, self.firstName, self.middleName)
 
 class PilotAdmin(admin.ModelAdmin):
-    list_display = ('pilotNumber','firstName','middleName','lastName','teamName')
+    list_display = ('pilotNumber','firstName','middleName','lastName','carModel','teamName',)
 
 admin.site.register(Pilot,PilotAdmin)
 

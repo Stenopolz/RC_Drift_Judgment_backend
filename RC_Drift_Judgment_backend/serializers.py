@@ -10,7 +10,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class PilotSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pilot
-        fields = ['id','firstName','middleName','lastName','teamName','pilotNumber',]
+        fields = ['id','firstName','middleName','lastName','teamName','carModel','pilotNumber',]
 
 class PilotResultSerializer(serializers.ModelSerializer):
 
@@ -18,7 +18,7 @@ class PilotResultSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Pilot
-        fields = ['id','firstName','middleName','lastName','teamName','pilotNumber','racesResults',]
+        fields = ['id','firstName','middleName','lastName','teamName','carModel','pilotNumber','racesResults',]
 
 class RaceMarkSerializer(serializers.ModelSerializer):
     class Meta:
