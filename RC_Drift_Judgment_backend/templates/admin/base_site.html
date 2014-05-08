@@ -1,10 +1,11 @@
 {% extends "admin/base.html" %}
 {% load i18n %}
-
+{% load staticfiles %}
 {% block title %}{{ title }} | {% trans 'RC Drift judgement' %}{% endblock %}
 
 {% block branding %}
-<h1 id="site-name">{% trans 'RC Drift judgement' %}</h1>
+<img style="float:left; height: 37px;" src="{% static 'img/logo.png' %}">
+<h1 style="height: 37px; display: table-cell; vertical-align: middle; color: #fafafa;" id="site-name"><strong>{% trans 'Judgement' %}</strong></h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
