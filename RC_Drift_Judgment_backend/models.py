@@ -40,6 +40,10 @@ MARK_CHOICES = (
     (10,'10'),
     (100,'X'),
 )
+tmpMarks = [ (i,str(i)) for i in xrange(0,21) ]
+tmpMarks.append( (100,'X') )
+MARK_CHOICES = tuple(tmpMarks)
+
 class RaceMark(models.Model):
     db_table = 'race_marks'
 
