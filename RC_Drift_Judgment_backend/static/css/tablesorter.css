@@ -1,0 +1,14 @@
+/* Sortable tables */
+table.table-sortable>thead>tr>th.header{
+  cursor : pointer;
+}
+
+table.table-sortable>thead>tr>th.header.headerSortDown {
+  /*background-image: url('/static/img/desc.gif');*/
+  border-bottom: solid green 5px;
+}
+
+table.table-sortable>thead>tr>th.header.headerSortUp {
+  /*background-image: url('/static/img/asc.gif');*/
+  border-top: solid green 5px;
+}
