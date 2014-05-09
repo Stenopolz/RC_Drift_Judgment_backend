@@ -1,0 +1,56 @@
+{% extends "admin/base_site.html" %}
+{% load staticfiles %}
+
+{% block title %}Racing results{% endblock %}
+{% block extrahead %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css'%}">
+    <script type="text/javascript" src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+    <script type="text/javascript">
+    window.onload = function() {
+        //updateResults();
+    };
+    </script>
+    <style type="text/css">
+        .btn {
+            text-align: left;
+        }
+
+        .btn-group-vertical {
+            width: 100%;
+            padding-bottom: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <div class="row">
+        <div class="col-sm-3">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    <div class="btn-group">
+                        <a class="btn btn-default {% if top = 32 %}active{%endif%}" href="{% url 'top-results' 32 %}">Top 32</a>
+                        <a class="btn btn-default {% if top = 16 %}active{%endif%}" href="{% url 'top-results' 16 %}">Top 16</a>
+                        <a class="btn btn-default {% if top = 8 %}active{%endif%}" href="{% url 'top-results' 8 %}">Top 8</a>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    <ol width="100%">
+                        {% for pilot1,pilot2 in pairs %}
+                        <li>
+                            <div class="btn-group-vertical">
+                                <button class="btn btn-default">{{pilot1}}</button>
+                                <button class="btn btn-default">{{pilot2}}</button>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -86,10 +86,8 @@ def PilotDetail(request, pk=None, format=None):
 
     return Response(content)
 
-@api_view(['GET'])
-def RaceResults(request):
-    """
-    """
+
+def getQualifyResults():
 
     def pilotCompare(first,second):
         def getBestRace(pilot,exceptRaceNum=None):
@@ -154,6 +152,15 @@ def RaceResults(request):
 
     pilots = list(Pilot.objects.all())
     sortedPilots = sorted(pilots,cmp=pilotCompare)
+
+    return sortedPilots
+
+
+@api_view(['GET'])
+def RaceResults(request):
+    """
+    """
+    sortedPilots = getQualifyResults()
 
     data = []
     for pilot in sortedPilots:

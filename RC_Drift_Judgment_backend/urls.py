@@ -14,7 +14,8 @@ urlpatterns = patterns('',
     url(r'^results', results, name='results'),
     url(r'^admin/', include(admin.site.urls)),
     # WEB content
-    url(r'^$', results, name='home' ),
+    url(r'^$', results, name='qual-results' ),
+    url(r'^top/(?P<topNum>(\d+){1,2})/$', topResults, name='top-results'),
     # REST API
     url(r'^api/', include('RC_Drift_Judgment_backend.api') ),
 )
