@@ -38,6 +38,7 @@
                 </div>
 
                 <div class="panel-body">
+                    {% if pairs|length > 0%}
                     <ol width="100%">
                         {% for pilot1,pilot2 in pairs %}
                         <li>
@@ -46,8 +47,12 @@
                                 <button class="btn btn-default">{{pilot2}}</button>
                             </div>
                         </li>
-                        {% endfor %}
+                        {%endfor%}
                     </ol>
+                    {%else%}
+                        <div class="alert alert-warning">Not enough data to form top {{ top }}</div>
+                    {%endif%}
+
                 </div>
             </div>
         </div>

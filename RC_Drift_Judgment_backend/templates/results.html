@@ -76,6 +76,9 @@
   <div id="content">
     <div style="padding-bottom:15px;">
         <button id="refresh" onclick="updateResults()">Refresh</button>
+        <a role="button" href="{% url 'top-results' 32 %}">Top 32</a>
+        <a href="{% url 'top-results' 16 %}">Top 16</a>
+        <a href="{% url 'top-results' 8 %}">Top 8</a>
     </div>
     <table class="table-sortable" width="100%">
         <thead>
