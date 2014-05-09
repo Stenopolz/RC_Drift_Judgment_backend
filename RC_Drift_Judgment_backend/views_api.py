@@ -23,11 +23,12 @@ def api_root(request, format=None):
     The entry endpoint of our API.
     """
     return Response({
-        'judges' : reverse('user-list',request=request),
+        'judges': reverse('user-list', request=request),
         'pilots': reverse('pilot-list', request=request),
         'marks': reverse('mark-list', request=request),
-        'results' : reverse('results-detail', request=request),
+        'results': reverse('results-detail', request=request),
     })
+
 
 class JudgeList(generics.ListCreateAPIView):
     """
@@ -37,6 +38,7 @@ class JudgeList(generics.ListCreateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.exclude(username='root')
 
+
 class JudgeDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     API endpoint that represents a single judge.
@@ -45,12 +47,15 @@ class JudgeDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.exclude(username='root')
 
+
 class PilotList(generics.ListCreateAPIView):
     """
     API endpoint that represents a list of pilots.
     """
     model = Pilot
     serializer_class = PilotSerializer
+    queryset = Pilot.objects.exclude(active=False)
+
 
 class RaceMarkList(generics.ListCreateAPIView):
     """
@@ -59,12 +64,14 @@ class RaceMarkList(generics.ListCreateAPIView):
     model = RaceMark
     serializer_class = RaceMarkSerializer
 
+
 class RaceMarkDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     API endpoint that represents a single race mark.
     """
     model = RaceMark
     serializer_class = RaceMarkSerializer
+
 
 @api_view(['GET'])
 def PilotDetail(request, pk=None, format=None):
@@ -82,33 +89,36 @@ def PilotDetail(request, pk=None, format=None):
     content['marks'] = []
     marks = pilot.marks.all()
     for mark in marks:
-        content['marks'].append( RaceMarkSerializer(mark).data )
+        content['marks'].append(RaceMarkSerializer(mark).data)
 
     return Response(content)
+
 
 @api_view(['GET'])
 def RaceResults(request):
     """
     """
 
-    def pilotCompare(first,second):
-        def getBestRace(pilot,exceptRaceNum=None):
+    def pilotCompare(first, second):
+        def getBestRace(pilot, exceptRaceNum=None):
 
-            racesResults = pilot.marks.values('raceNumber').annotate(best_score=models.Min('mark'),avg_score=models.Avg('mark'))
+            racesResults = pilot.marks.values('raceNumber')\
+                .annotate(best_score=models.Min('mark'),
+                          avg_score=models.Avg('mark'))
 
             if exceptRaceNum:
                 print "excepting %s" % exceptRaceNum
-                for i in range(0,len(racesResults)):
+                for i in range(0, len(racesResults)):
                     if racesResults[i]['raceNumber'] == exceptRaceNum:
                         del racesResults[i]
                         break
 
-            return sorted(racesResults,key=lambda race: race['avg_score'])
+            return sorted(racesResults, key=lambda race: race['avg_score'])
 
         firstRace = getBestRace(first)
         secondRace = getBestRace(second)
 
-        def compareBestMarks(firstBm,secondBm):
+        def compareBestMarks(firstBm, secondBm):
             if firstRace[0]['avg_score'] < secondRace[0]['avg_score']:
                 return -1
             elif firstRace[0]['avg_score'] > secondRace[0]['avg_score']:
@@ -117,21 +127,21 @@ def RaceResults(request):
                 return 0
 
         # 3
-        res1 = compareBestMarks(firstRace,secondRace)
+        res1 = compareBestMarks(firstRace, secondRace)
         if res1 != 0:
             return res1
 
         # 4
         del firstRace[0]
         del secondRace[0]
-        res2 = compareBestMarks(firstRace,secondRace)
+        res2 = compareBestMarks(firstRace, secondRace)
         if res2 != 0:
             return res2
 
         # 5
         del firstRace[0]
         del secondRace[0]
-        res3 = compareBestMarks(firstRace,secondRace)
+        res3 = compareBestMarks(firstRace, secondRace)
         if res3 != 0:
             return res3
 
@@ -141,24 +151,24 @@ def RaceResults(request):
 
         if firstMarks[0].mark < secondMarks[0].mark:
             return -1
-        elif  firstMarks[0].mark > secondMarks[0].mark:
+        elif firstMarks[0].mark > secondMarks[0].mark:
             return 1
 
         # 7 compare by numbers
         if first.pilotNumber < second.pilotNumber:
             return -1
-        elif  first.pilotNumber > second.pilotNumber:
+        elif first.pilotNumber > second.pilotNumber:
             return 1
 
         return 0
 
     pilots = list(Pilot.objects.all())
-    sortedPilots = sorted(pilots,cmp=pilotCompare)
+    sortedPilots = sorted(pilots, cmp=pilotCompare)
 
     data = []
     for pilot in sortedPilots:
         ser = PilotResultSerializer(pilot)
-        data.append ( ser.data )
+        data.append(ser.data)
 
     return Response(data)
 

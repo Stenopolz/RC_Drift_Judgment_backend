@@ -2,19 +2,19 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-from rest_framework import viewsets, routers
-from rest_framework import serializers
-from django.contrib.auth.models import User
-
 from .views import *
 
 # URL Handlers
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     # ADMIN Panel
-    url(r'^results', results, name='results'),
     url(r'^admin/', include(admin.site.urls)),
     # WEB content
-    url(r'^$', results, name='home' ),
+    url(r'^$', pageResults, name='results'),
+    #url(r'^login/', pageLogin, name='login'),
+    url(r'^login/$', 'django.contrib.auth.views.login',
+        {'template_name': 'login.html'}),
+    url(r'^judge/', pageJudge, name='judge'),
     # REST API
-    url(r'^api/', include('RC_Drift_Judgment_backend.api') ),
+    url(r'^api/', include('RC_Drift_Judgment_backend.api')),
 )
