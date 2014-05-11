@@ -21,6 +21,9 @@ class Pilot(models.Model):
     def __unicode__(self):
         return "#%d : %s %s %s" % (self.pilotNumber,self.lastName, self.firstName, self.middleName)
 
+    class Meta:
+        ordering = ['pilotNumber']
+
 class PilotAdmin(admin.ModelAdmin):
     list_display = ('pilotNumber','firstName','lastName','carModel','teamName',)
 
