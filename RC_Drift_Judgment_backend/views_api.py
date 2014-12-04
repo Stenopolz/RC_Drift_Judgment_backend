@@ -107,9 +107,9 @@ def getQualifyResults():
         secondRace = getBestRace(second)
 
         def compareBestMarks(firstBm,secondBm):
-            if firstRace[0]['avg_score'] < secondRace[0]['avg_score']:
+            if firstRace[0]['avg_score'] > secondRace[0]['avg_score']:
                 return -1
-            elif firstRace[0]['avg_score'] > secondRace[0]['avg_score']:
+            elif firstRace[0]['avg_score'] < secondRace[0]['avg_score']:
                 return 1
             else:
                 return 0
@@ -137,9 +137,9 @@ def getQualifyResults():
         firstMarks = first.marks.all().order_by('mark')
         secondMarks = second.marks.all().order_by('mark')
 
-        if firstMarks[0].mark < secondMarks[0].mark:
+        if firstMarks[0].mark > secondMarks[0].mark:
             return -1
-        elif  firstMarks[0].mark > secondMarks[0].mark:
+        elif  firstMarks[0].mark < secondMarks[0].mark:
             return 1
 
         # 7 compare by numbers
