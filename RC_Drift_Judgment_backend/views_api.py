@@ -92,7 +92,7 @@ def getQualifyResults():
     def pilotCompare(first,second):
         def getBestRace(pilot,exceptRaceNum=None):
 
-            racesResults = pilot.marks.values('raceNumber').annotate(best_score=models.Min('mark'),avg_score=models.Avg('mark'))
+            racesResults = pilot.marks.values('raceNumber').annotate(best_score=models.Max('mark'),avg_score=models.Avg('mark'))
 
             if exceptRaceNum:
                 print "excepting %s" % exceptRaceNum
