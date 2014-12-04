@@ -43,8 +43,8 @@ MARK_CHOICES = (
     (10,'10'),
     (100,'X'),
 )
-tmpMarks = [ (i,str(i)) for i in xrange(0,21) ]
-tmpMarks.append( (100,'X') )
+tmpMarks = [ (i,str(i)) for i in xrange(0,101) ]
+tmpMarks.append( (101,'X') )
 MARK_CHOICES = tuple(tmpMarks)
 
 class RaceMark(models.Model):
@@ -53,7 +53,7 @@ class RaceMark(models.Model):
     raceNumber = models.IntegerField('Race number',default=1)
     pilot = models.ForeignKey(Pilot,related_name='marks')
     judge = models.ForeignKey(User,related_name='+')
-    mark = models.IntegerField('Mark',choices=MARK_CHOICES,default=100,blank=False)
+    mark = models.IntegerField('Mark',choices=MARK_CHOICES,default=101,blank=False)
 
     class Meta:
         unique_together = ['raceNumber','judge','pilot']
